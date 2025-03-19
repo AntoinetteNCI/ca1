@@ -1,0 +1,33 @@
+version: 2.1
+
+jobs:
+  build:
+    working_directory: ~/ExampleApplication
+    docker:
+      - image: cimg/node:20.10 #this is my version of node
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - dependency-cache-{{ checksum "package-lock.json" }}
+
+      - run:
+          name: Install Dependencies
+          command: npm ci # to make correct version of packages are installed
+      - run:
+          name: test-run
+          command: npm run test
+      - save_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - ./node_modules
+
+workflows:
+  build:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - main
