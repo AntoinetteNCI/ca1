@@ -17,7 +17,7 @@ jobs:
           command: npm ci # to make correct version of packages are installed
       - run:
           name: test-run
-          command: npm run test
+          command: npm run test #this is a test
       - save_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
           paths:
